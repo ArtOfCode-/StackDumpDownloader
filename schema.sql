@@ -1,116 +1,165 @@
 -- Schema creation SQL designed for MySQL systems.
 
-CREATE TABLE IF NOT EXISTS `Badges` (
-    `Id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `SiteSpecificId` INT(11) NOT NULL,
-    `UserId` INT(11) NOT NULL,
-    `Name` VARCHAR(50) NOT NULL,
-    `Date` DATETIME NOT NULL,
-    `Class` TINYINT(1) NOT NULL,
-    `TagBased` BOOLEAN NOT NULL,
-    `Site` VARCHAR(50) NOT NULL
+CREATE TABLE `Badges` (
+	`Id` INT(11) NOT NULL AUTO_INCREMENT,
+	`SiteSpecificId` INT(11) NOT NULL,
+	`UserId` INT(11) NOT NULL,
+	`Name` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	`Date` DATETIME NOT NULL,
+	`Class` TINYINT(1) NOT NULL,
+	`TagBased` TINYINT(1) NOT NULL,
+	`Site` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`Id`),
+	INDEX `SiteSpecificId` (`SiteSpecificId`),
+	INDEX `Name` (`Name`),
+	INDEX `Site` (`Site`)
 );
 
-CREATE TABLE IF NOT EXISTS `Comments` (
-    `Id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `SiteSpecificId` INT(11) NOT NULL,
-    `PostId` INT(11) NOT NULL,
-    `Score` INT(11) NOT NULL,
-    `Text` VARCHAR(500) NOT NULL,
-    `CreationDate` DATETIME NOT NULL,
-    `UserId` INT(11) NOT NULL,
-    `UserDisplayName` VARCHAR(100),
-    `Site` VARCHAR(50) NOT NULL
+CREATE TABLE `Comments` (
+	`Id` INT(11) NOT NULL AUTO_INCREMENT,
+	`SiteSpecificId` INT(11) NOT NULL,
+	`PostId` INT(11) NOT NULL,
+	`Score` INT(11) NOT NULL,
+	`Text` VARCHAR(500) NOT NULL COLLATE 'utf8_unicode_ci',
+	`CreationDate` DATETIME NOT NULL,
+	`UserId` INT(11) NOT NULL,
+	`UserDisplayName` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`Site` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`Id`),
+	INDEX `SiteSpecificId` (`SiteSpecificId`),
+	INDEX `UserDisplayName` (`UserDisplayName`),
+	INDEX `Site` (`Site`),
+	INDEX `Score` (`Score`)
 );
 
-CREATE TABLE IF NOT EXISTS `PostHistory` (
-    `Id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `SiteSpecificId` INT(11) NOT NULL,
-    `PostHistoryTypeId` INT(11) NOT NULL,
-    `PostId` INT(11) NOT NULL,
-    `RevisionGUID` VARCHAR(40) NOT NULL,
-    `CreationDate` DATETIME NOT NULL,
-    `UserDisplayName` VARCHAR(100),
-    `Comment` VARCHAR(500),
-    `UserId` INT(11),
-    `Text` VARCHAR(30000),
-    `Site` VARCHAR(50) NOT NULL
+CREATE TABLE `PostHistory` (
+	`Id` INT(11) NOT NULL AUTO_INCREMENT,
+	`SiteSpecificId` INT(11) NOT NULL,
+	`PostHistoryTypeId` INT(11) NOT NULL,
+	`PostId` INT(11) NOT NULL,
+	`RevisionGUID` VARCHAR(40) NOT NULL COLLATE 'utf8_unicode_ci',
+	`CreationDate` DATETIME NOT NULL,
+	`UserDisplayName` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`Comment` VARCHAR(500) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`UserId` INT(11) NULL DEFAULT NULL,
+	`Text` MEDIUMTEXT NULL COLLATE 'utf8_unicode_ci',
+	`Site` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`Id`),
+	INDEX `SiteSpecificId` (`SiteSpecificId`),
+	INDEX `Site` (`Site`),
+	INDEX `UserDisplayName` (`UserDisplayName`),
+	INDEX `RevisionGUID` (`RevisionGUID`),
+	INDEX `PostHistoryTypeId` (`PostHistoryTypeId`),
+	INDEX `PostId` (`PostId`)
 );
 
-CREATE TABLE IF NOT EXISTS `PostLinks` (
-    `Id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `SiteSpecificId` INT(11) NOT NULL,
-    `CreationDate` DATETIME NOT NULL,
-    `PostId` INT(11) NOT NULL,
-    `RelatedPostId` INT(11) NOT NULL,
-    `LinkTypeId` INT(11) NOT NULL,
-    `Site` VARCHAR(50) NOT NULL
+CREATE TABLE `PostLinks` (
+	`Id` INT(11) NOT NULL AUTO_INCREMENT,
+	`SiteSpecificId` INT(11) NOT NULL,
+	`CreationDate` DATETIME NOT NULL,
+	`PostId` INT(11) NOT NULL,
+	`RelatedPostId` INT(11) NOT NULL,
+	`LinkTypeId` INT(11) NOT NULL,
+	`Site` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`Id`),
+	INDEX `SiteSpecificId` (`SiteSpecificId`),
+	INDEX `Site` (`Site`),
+	INDEX `PostId` (`PostId`),
+	INDEX `RelatedPostId` (`RelatedPostId`)
 );
 
-CREATE TABLE IF NOT EXISTS `Posts` (
-    `Id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `SiteSpecificId` INT(11) NOT NULL,
-    `PostTypeId` INT(11) NOT NULL,
-    `ParentId` INT(11),
-    `AcceptedAnswerId` INT(11),
-    `CreationDate` DATETIME NOT NULL,
-    `Score` INT(11) NOT NULL,
-    `ViewCount` INT(11),
-    `Body` VARCHAR(30000) NOT NULL,
-    `OwnerUserId` INT(11) NOT NULL,
-    `OwnerDisplayName` VARCHAR(100),
-    `LastEditorUserId` INT(11),
-    `LastEditorDisplayName` VARCHAR(100),
-    `LastEditDate` DATETIME,
-    `LastActivityDate` DATETIME,
-    `Title` VARCHAR(120),
-    `Tags` VARCHAR(140),
-    `AnswerCount` INT(11),
-    `CommentCount` INT(11),
-    `FavoriteCount` INT(11),
-    `ClosedDate` DATETIME,
-    `CommunityOwnedDate` DATETIME,
-    `Site` VARCHAR(50) NOT NULL
+CREATE TABLE `Posts` (
+	`Id` INT(11) NOT NULL AUTO_INCREMENT,
+	`SiteSpecificId` INT(11) NOT NULL,
+	`PostTypeId` INT(11) NOT NULL,
+	`ParentId` INT(11) NULL DEFAULT NULL,
+	`AcceptedAnswerId` INT(11) NULL DEFAULT NULL,
+	`CreationDate` DATETIME NOT NULL,
+	`Score` INT(11) NOT NULL,
+	`ViewCount` INT(11) NULL DEFAULT NULL,
+	`Body` MEDIUMTEXT NOT NULL COLLATE 'utf8_unicode_ci',
+	`OwnerUserId` INT(11) NOT NULL,
+	`OwnerDisplayName` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`LastEditorUserId` INT(11) NULL DEFAULT NULL,
+	`LastEditorDisplayName` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`LastEditDate` DATETIME NULL DEFAULT NULL,
+	`LastActivityDate` DATETIME NULL DEFAULT NULL,
+	`Title` VARCHAR(120) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`Tags` VARCHAR(140) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`AnswerCount` INT(11) NULL DEFAULT NULL,
+	`CommentCount` INT(11) NULL DEFAULT NULL,
+	`FavoriteCount` INT(11) NULL DEFAULT NULL,
+	`ClosedDate` DATETIME NULL DEFAULT NULL,
+	`CommunityOwnedDate` DATETIME NULL DEFAULT NULL,
+	`Site` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`Id`),
+	INDEX `SiteSpecificId` (`SiteSpecificId`),
+	INDEX `PostTypeId` (`PostTypeId`),
+	INDEX `Score` (`Score`),
+	INDEX `OwnerUserId` (`OwnerUserId`),
+	INDEX `OwnerDisplayName` (`OwnerDisplayName`),
+	INDEX `Title` (`Title`),
+	INDEX `Tags` (`Tags`),
+	INDEX `ClosedDate` (`ClosedDate`),
+	INDEX `Site` (`Site`)
 );
 
-CREATE TABLE IF NOT EXISTS `Tags` (
-    `Id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `SiteSpecificId` INT(11) NOT NULL,
-    `TagName` VARCHAR(25) NOT NULL,
-    `Count` INT(11) NOT NULL,
-    `ExcerptPostId` INT(11) NOT NULL,
-    `WikiPostId` INT(11) NOT NULL,
-    `Site` VARCHAR(50) NOT NULL
+CREATE TABLE `Tags` (
+	`Id` INT(11) NOT NULL AUTO_INCREMENT,
+	`SiteSpecificId` INT(11) NOT NULL,
+	`TagName` VARCHAR(25) NOT NULL COLLATE 'utf8_unicode_ci',
+	`Count` INT(11) NOT NULL,
+	`ExcerptPostId` INT(11) NOT NULL,
+	`WikiPostId` INT(11) NOT NULL,
+	`Site` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`Id`),
+	INDEX `SiteSpecificId` (`SiteSpecificId`),
+	INDEX `Site` (`Site`),
+	INDEX `Count` (`Count`),
+	INDEX `TagName` (`TagName`)
 );
 
-CREATE TABLE IF NOT EXISTS `Users` (
-    `Id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `SiteSpecificId` INT(11) NOT NULL,
-    `Reputation` INT(11) NOT NULL,
-    `CreationDate` DATETIME NOT NULL,
-    `DisplayName` VARCHAR(100) NOT NULL,
-    `LastAccessDate` DATETIME,
-    `Location` VARCHAR(100),
-    `AboutMe` VARCHAR(30000),
-    `Views` INT(11) NOT NULL,
-    `UpVotes` INT(11) NOT NULL,
-    `DownVotes` INT(11) NOT NULL,
-    `Age` INT(3),
-    `AccountId` INT(11) NOT NULL,
-    `ProfileImageUrl` VARCHAR(255),
-    `WebsiteUrl` VARCHAR(255),
-    `Site` VARCHAR(50) NOT NULL
+CREATE TABLE `Users` (
+	`Id` INT(11) NOT NULL AUTO_INCREMENT,
+	`SiteSpecificId` INT(11) NOT NULL,
+	`Reputation` INT(11) NOT NULL,
+	`CreationDate` DATETIME NOT NULL,
+	`DisplayName` VARCHAR(100) NOT NULL COLLATE 'utf8_unicode_ci',
+	`LastAccessDate` DATETIME NULL DEFAULT NULL,
+	`Location` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`AboutMe` MEDIUMTEXT NULL COLLATE 'utf8_unicode_ci',
+	`Views` INT(11) NOT NULL,
+	`UpVotes` INT(11) NOT NULL,
+	`DownVotes` INT(11) NOT NULL,
+	`Age` INT(3) NULL DEFAULT NULL,
+	`AccountId` INT(11) NOT NULL,
+	`ProfileImageUrl` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`WebsiteUrl` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
+	`Site` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`Id`),
+	INDEX `SiteSpecificId` (`SiteSpecificId`),
+	INDEX `Reputation` (`Reputation`),
+	INDEX `DisplayName` (`DisplayName`),
+	INDEX `UpVotes` (`UpVotes`),
+	INDEX `DownVotes` (`DownVotes`),
+	INDEX `AccountId` (`AccountId`),
+	INDEX `Site` (`Site`)
 );
 
-CREATE TABLE IF NOT EXISTS `Votes` (
-    `Id` INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `SiteSpecificId` INT(11) NOT NULL,
-    `PostId` INT(11) NOT NULL,
-    `VoteTypeId` INT(11) NOT NULL,
-    `UserId` INT(11),
-    `CreationDate` DATETIME NOT NULL,
-    `BountyAmount` INT(11),
-    `Site` VARCHAR(50) NOT NULL
+CREATE TABLE `Votes` (
+	`Id` INT(11) NOT NULL AUTO_INCREMENT,
+	`SiteSpecificId` INT(11) NOT NULL,
+	`PostId` INT(11) NOT NULL,
+	`VoteTypeId` INT(11) NOT NULL,
+	`UserId` INT(11) NULL DEFAULT NULL,
+	`CreationDate` DATETIME NOT NULL,
+	`BountyAmount` INT(11) NULL DEFAULT NULL,
+	`Site` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	PRIMARY KEY (`Id`),
+	INDEX `SiteSpecificId` (`SiteSpecificId`),
+	INDEX `PostId` (`PostId`),
+	INDEX `VoteTypeId` (`VoteTypeId`),
+	INDEX `Site` (`Site`)
 );
 
 CREATE TABLE IF NOT EXISTS `PostHistoryTypes` (

@@ -8,7 +8,7 @@ from retrieval import StackDataRetriever
 from processing import FileProcessor
 
 
-site_whitelist = ['Open Source', 'Hardware Recommendations']
+site_whitelist = ['Programming Puzzles and Code Golf', 'Code Review', 'Motor Vehicle Maintenance and Repair']
 site_blacklist = []
 
 site_mode = "whitelist"
