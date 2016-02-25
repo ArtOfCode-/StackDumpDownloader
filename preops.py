@@ -18,7 +18,7 @@ def clear_db(tables):
     for table in tables:
         queries.append("TRUNCATE {0};".format(table))
 
-    print("[preops] Clearing database: executing {0}".format(query))
+    print("[preops] Clearing database: executing {0}".format(" ".join(queries)))
 
     conn = mysql.connect(user=Config.Database['user'],
                          password=Config.Database['pass'],
