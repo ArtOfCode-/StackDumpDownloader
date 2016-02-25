@@ -4,6 +4,7 @@ import sys
 import shutil
 
 import sites
+import preops
 from retrieval import StackDataRetriever
 from processing import FileProcessor
 
@@ -43,8 +44,8 @@ def trim_site_list(site_list):
 
 if __name__ == "__main__":
     if "-X" in sys.argv:
-        shutil.rmtree(data_dir, ignore_errors=True)
-        os.mkdir(data_dir)
-    if not path.isdir(data_dir):
-        os.mkdir(data_dir)
+        preops.rm_files()
+    if "-C" in sys.argv:
+        preops.clear_db()
+    preops.ensure_data_dir()
     main()

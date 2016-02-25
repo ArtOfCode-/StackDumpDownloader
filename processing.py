@@ -1,15 +1,7 @@
 import mysql.connector as mysql
 from xml.etree import ElementTree
 import os.path as path
-
-
-class Config:
-    Database = {
-        "host": "localhost",
-        "user": "DataManager",
-        "pass": "JMNDXAHJPVfwyfZ4",
-        "name": "StackData"
-    }
+from config import Config
 
 
 class FileProcessor:
@@ -26,12 +18,12 @@ class FileProcessor:
                              database=Config.Database['name'])
 
     def _clean_up(self):
+        # Committing is necessary to make sure the data is actually written to the database
         self.conn.commit()
         self.conn.cursor().close()
         self.conn.close()
 
     def process(self):
-        # TODO: We still get the odd MySQL syntax error. Investigate what else can be done.
         # We'll assume that we're getting sane data in. Bad assumption, I know, but I really can't be
         # bothered to work in all the edge cases that are possible here. I'm assuming a filename of the form
         # TableName.xml.
@@ -77,7 +69,7 @@ class FileProcessor:
                         print(u"[FileProcessor] {0}".format(query))
                     except UnicodeEncodeError:
                         print("[FileProcessor] Avoiding printing query due to UEE.")
-                        
+
         print("[FileProcessor] Processed file {0} with {1} successful queries and {2} failed."
               .format(file_name, successful_queries, failed_queries))
         self._clean_up()
