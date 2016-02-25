@@ -43,5 +43,5 @@ if __name__ == "__main__":
         preops.rm_files(data_dir)
     if "-C" in sys.argv:
         preops.clear_db(data_tables)
-    preops.ensure_data_dir()
+    preops.ensure_data_dir(data_dir)
     main()
