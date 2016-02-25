@@ -7,6 +7,7 @@ import sites
 import preops
 from retrieval import StackDataRetriever
 from processing import FileProcessor
+from config import Config
 
 data_dir = (os.getcwd() + "/" if os.getcwd()[-1] != "/" else os.getcwd()) + "data/"
 
