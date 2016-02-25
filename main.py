@@ -16,6 +16,8 @@ site_mode = "whitelist"
 
 data_dir = (os.getcwd() + "/" if os.getcwd()[-1] != "/" else os.getcwd()) + "data/"
 
+data_tables = ['Badges', 'Comments', 'PostHistory', 'PostLinks', 'Posts', 'Tags', 'Users', 'Votes']
+
 
 def main():
     site_list = trim_site_list(sites.get_site_list())
@@ -44,8 +46,8 @@ def trim_site_list(site_list):
 
 if __name__ == "__main__":
     if "-X" in sys.argv:
-        preops.rm_files()
+        preops.rm_files(data_dir)
     if "-C" in sys.argv:
-        preops.clear_db()
+        preops.clear_db(data_tables)
     preops.ensure_data_dir()
     main()
