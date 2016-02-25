@@ -26,7 +26,7 @@ def clear_db(tables):
                          database=Config.Database['name'])
 
     for query in queries:
-        conn.cursor().execute(query);
+        conn.cursor().execute(query)
 
     conn.commit()
     conn.cursor().close()
