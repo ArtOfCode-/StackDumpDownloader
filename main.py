@@ -8,12 +8,6 @@ import preops
 from retrieval import StackDataRetriever
 from processing import FileProcessor
 
-
-site_whitelist = ['Programming Puzzles and Code Golf', 'Code Review', 'Motor Vehicle Maintenance and Repair']
-site_blacklist = []
-
-site_mode = "whitelist"
-
 data_dir = (os.getcwd() + "/" if os.getcwd()[-1] != "/" else os.getcwd()) + "data/"
 
 data_tables = ['Badges', 'Comments', 'PostHistory', 'PostLinks', 'Posts', 'Tags', 'Users', 'Votes']
@@ -35,10 +29,10 @@ def main():
 
 
 def trim_site_list(site_list):
-    if site_mode == 'whitelist':
-        trimmed = [x for x in site_list if x['Name'] in site_whitelist]
-    elif site_mode == 'blacklist':
-        trimmed = [x for x in site_list if x['Name'] not in site_blacklist]
+    if Config.General['site_mode'] == 'whitelist':
+        trimmed = [x for x in site_list if x['Name'] in Config.General['site_whitelist']]
+    elif Config.General['site_mode'] == 'blacklist':
+        trimmed = [x for x in site_list if x['Name'] not in Config.General['site_blacklist']]
     else:
         trimmed = []
     return trimmed
