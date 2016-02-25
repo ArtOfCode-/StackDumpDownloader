@@ -14,9 +14,9 @@ def ensure_data_dir(data_dir):
         os.mkdir(data_dir)
 
 def clear_db(tables):
-    query = ""
+    queries = []
     for table in tables:
-        query += "TRUNCATE {0}; ".format(table)
+        queries.append("TRUNCATE {0};".format(table))
 
     print("[preops] Clearing database: executing {0}".format(query))
 
@@ -24,7 +24,10 @@ def clear_db(tables):
                          password=Config.Database['pass'],
                          host=Config.Database['host'],
                          database=Config.Database['name'])
-    conn.cursor().execute(query)
+
+    for query in queries:
+        conn.cursor().execute(query);
+
     conn.commit()
     conn.cursor().close()
     conn.close()
