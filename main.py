@@ -1,3 +1,12 @@
+# Main script file for StackDumpDownloader.
+# Command-line usage:
+#
+#     python3 main.py [-X] [-C] [-P]
+#
+# -X: Clear data directory before run to avoid write collisions.
+# -C: Empty database before run to avoid duplicating data.
+# -P: Run preops (-X OR -C) then quit.
+
 import os
 import os.path as path
 import sys
@@ -45,4 +54,5 @@ if __name__ == "__main__":
     if "-C" in sys.argv:
         preops.clear_db(data_tables)
     preops.ensure_data_dir(data_dir)
-    main()
+    if "-P" not in sys.argv:
+        main()
